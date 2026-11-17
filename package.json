@@ -1,1 +1,1 @@
-{"name":"ahmeljic-rent-a-car","private":true,"type":"module","scripts":{"start":"node server.cjs","test":"node --test test-cutouts.mjs"}}
+{"name":"ahmeljic-rent-a-car","private":true,"type":"module","scripts":{"start":"node server.cjs","test":"node --test test-cutouts.mjs test-gallery.mjs"}}

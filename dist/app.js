@@ -1,4 +1,6 @@
 import {CarScene,StreetView} from './car-scene.js?v=4';
+import {photos} from './photo-data.js';
+import {createGallery} from './gallery.js?v=5';
 export const cars=[
  {name:'Volkswagen Golf Plus',make:'Volkswagen',category:'Kompakt',body:'Monovolumen',file:'golf',price:65,description:'Više prostora za svakodnevne planove. Tvoj praktični saputnik.'},
  {name:'Seat Leon',make:'Seat',category:'Gradski izbor',body:'Hatchback',file:'seat',price:60,description:'Kompaktan, upečatljiv i spreman za tvoju sljedeću destinaciju.'},
@@ -11,6 +13,8 @@ export const cars=[
 const $=id=>document.getElementById(id),select=$('car-select'),pickup=$('pickup'),dropoff=$('return');
 const money=value=>value===null?'Priceless':new Intl.NumberFormat('bs-BA').format(value)+' KM';
 const price=car=>money(car.price)+(car.price===null?'':' / dan');
+const gallery=createGallery();
+$('hero-gallery').addEventListener('click',()=>gallery.open(cars[Number(select.value)]));
 const stage=$('street-stage');
 const view=new StreetView(stage,cars);
 const scene=new CarScene(view,(state,index)=>{
@@ -33,7 +37,11 @@ cars.forEach((car,index)=>{
  const article=document.createElement('article');article.className='fleet-card';
  const button=document.createElement('button');button.type='button';button.setAttribute('aria-label','Odaberi '+car.name);
  button.innerHTML=`<img src="assets/cutouts/${car.file}.png" alt="${car.name}" loading="lazy" width="640" height="426"><h3>${car.name}</h3><p>${car.category}<span>${price(car)}</span></p>`;
- button.addEventListener('click',()=>{select.value=index;update();$('izbor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});});article.append(button);$('fleet-grid').append(article);
+ button.addEventListener('click',()=>{select.value=index;update();$('izbor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});});article.append(button);
+ if(photos[car.file]?.length){
+  const photoButton=document.createElement('button');photoButton.type='button';photoButton.className='photo-button';photoButton.textContent=`Stvarne fotografije (${photos[car.file].length})`;photoButton.setAttribute('aria-label',`Stvarne fotografije — ${car.name}`);photoButton.addEventListener('click',()=>gallery.open(car));article.append(photoButton);
+ }
+ $('fleet-grid').append(article);
 });
 function dayValue(value){return Date.parse(value+'T00:00:00Z');}
 function localISO(date){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;}
@@ -41,7 +49,7 @@ function plusDay(value){const d=new Date(value+'T12:00:00');d.setDate(d.getDate(
 pickup.min=localISO(new Date());pickup.value=pickup.min;dropoff.min=plusDay(pickup.value);dropoff.value=dropoff.min;
 function days(){return Math.round((dayValue(dropoff.value)-dayValue(pickup.value))/86400000);}
 function estimate(){const count=days(),car=cars[Number(select.value)];dropoff.setCustomValidity(count<1?'Povrat mora biti nakon preuzimanja.':'');$('estimate').textContent=count>=1?`${count} ${count===1?'dan':'dana'} · ${car.price===null?'Priceless':money(count*car.price)} ukupno`:'Odaberi datume najma.';}
-function update(){const index=Number(select.value),car=cars[index];for(const [id,value] of Object.entries({'car-name':car.name,'car-category':car.category,'car-description':car.description,'car-make':car.make,'car-body':car.body,'car-price':money(car.price),'car-number':String(index+1).padStart(2,'0')}))$(id).textContent=value;estimate();scene.select(index);}
+function update(){const index=Number(select.value),car=cars[index];for(const [id,value] of Object.entries({'car-name':car.name,'car-category':car.category,'car-description':car.description,'car-make':car.make,'car-body':car.body,'car-price':money(car.price),'car-number':String(index+1).padStart(2,'0')}))$(id).textContent=value;const count=photos[car.file]?.length||0;$('hero-gallery').hidden=count===0;$('hero-gallery').textContent=`Pogledaj stvarne fotografije (${count})`;estimate();scene.select(index);}
 select.addEventListener('change',update);pickup.addEventListener('change',()=>{if(pickup.value){dropoff.min=plusDay(pickup.value);if(dropoff.value<=pickup.value)dropoff.value=dropoff.min;}estimate();});dropoff.addEventListener('change',estimate);
 $('retry').addEventListener('click',()=>scene.retry());
 $('replay-scene').addEventListener('click',()=>scene.replay());

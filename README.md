@@ -10,4 +10,8 @@ Ulica je kopija `Auta/Golf-Plus/01-start.png`. Prozirna vozila su u `dist/assets
 
 Nema runtime biblioteka ni video datoteka u objavljenoj verziji. Položaj i veličina auta te trajanje animacija podešavaju se u `StreetView` klasi. Zajednička koordinatna ravnina prilagođava se veličini prozora pomoću `ResizeObserver`.
 
+Identitet: `dist/brand.css` koristi crnu, crvenu i žuto-zlatnu paletu loga s tablica. `dist/assets/ahmeljic-logo.png` je imagegen rekonstrukcija loga prema stvarnoj fotografiji Seata, ne originalni vektorski fajl.
+
+Stvarne fotografije: 27 originalnih JPG datoteka kopirano je bez izmjena iz `Kola/` u `dist/assets/photos/`. `photo-sources.json` čuva mapiranje izvora, a `dist/photo-data.js` sadrži galerije po vozilu. Dostupne su iz hero forme i kartica vozila. Galerija podržava strelice, sličice, Escape, fokus i otvaranje originala. Golf nema galeriju prema korisnikovoj uputi.
+
 Provjera: sedam testova sekvence, brzih promjena izbora, grešaka, ponavljanja, isključivanja pokreta i izvora hero sekcije. Svaki cutout je vizuelno pregledan i provjeren je RGBA alpha kanal. Interaktivna provjera u pregledniku nije provedena jer nema povezanog preglednika u ovoj sesiji.

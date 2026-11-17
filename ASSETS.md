@@ -11,3 +11,11 @@ Prompt set (same extraction brief for all seven, with vehicle name substituted):
 Vehicles: black Volkswagen Golf Plus; red Seat Leon; grey Mazda CX-5; white Volkswagen Passat estate; white Volkswagen Jetta sedan; silver Peugeot 308 CC convertible; white Volkswagen Transporter van.
 
 The website uses the original empty street `../Auta/Golf-Plus/01-start.png`, copied to `dist/assets/street.png`. Imagegen can slightly reinterpret small lettering; these cutouts are visual presentation assets, not a source of contact information.
+
+## Plate logo restoration
+
+Built-in imagegen, transparent background. Final: `dist/assets/ahmeljic-logo.png`. Reference: `../Kola/Seat/650663238_122121773031108487_6818376902095050634_n.jpg`.
+
+Prompt: Extract and restore the existing Ahmeljić Auto business logo printed on the rear license plate. Output only the logo, front-facing and undistorted, on transparent alpha. Match red streamlined car silhouette, black bold condensed italic Ahmeljić, yellow-gold Auto with dark outline. Exact wording Ahmeljić Auto. Preserve arrangement and recognizable letter shapes. Remove plate rectangle, photographic scenery, phone numbers, and small bottom strip. No new design, tagline, or shadows.
+
+This is a reconstructed logo from a photograph, not the original vector artwork. All real vehicle gallery photos are separate, unmodified user-supplied files; see `photo-sources.json`.
