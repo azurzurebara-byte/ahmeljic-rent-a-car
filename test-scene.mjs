@@ -22,3 +22,10 @@ test('load errors can recover with retry',async()=>{const players=[new Video(),n
 test('autoplay rejection is reported, then recovers',async()=>{const players=[new Video(),new Video()];players[0].block=true;const s=new CarScene(players,cars,()=>{});await s.select(0);assert(s.failed);players[0].block=false;await s.retry();assert(!s.failed);assert.equal(s.active.currentTime,.2);});
 test('replay performs arrival again and parks',async()=>{const s=new CarScene([new Video(),new Video()],cars,()=>{});await s.select(1);const before=s.active;await s.replay();assert.equal(s.current,1);assert.equal(s.active,before);assert.equal(s.active.currentTime,.2);assert(s.active.paused);assert(!s.busy);});
 test('driving is enabled by default; static mode is explicit',()=>{const s=new CarScene([new Video(),new Video()],cars,()=>{});assert.equal(s.reducedMotion,false);});
+test('arrival finishes before parked photo; photo yields before departure',async()=>{
+ const events=[],players=[new Video(),new Video()];
+ const s=new CarScene(players,cars,()=>{},{onDrive:()=>events.push('video'),onPark:index=>{assert(s.active.paused);assert.equal(s.active.currentTime,cars[index].stop);events.push('photo:'+index);}});
+ await s.select(0);assert.deepEqual(events,['video','photo:0']);
+ await delay(30);assert.deepEqual(events,['video','photo:0']);
+ await s.select(1);assert.deepEqual(events,['video','photo:0','video','photo:1']);
+});

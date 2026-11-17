@@ -4,7 +4,7 @@ Pokretanje: `npm start`, zatim otvoriti http://127.0.0.1:4173. Nisu potrebne bib
 
 Sajt je u `dist/`. Cijene, nazivi i trenutak zaustavljanja (`stop`) / početak odlaska (`depart`) su u `dist/app.js`. Cijene su KM po danu; kombi je Priceless. Kontakt nije dostavljen pa obrazac daje lokalni pregled, ne šalje rezervaciju.
 
-Video kontroler koristi dva video elementa, čeka učitavanje narednog videa prije odlaska, pauzira na parkiranom kadru i obrađuje brze promjene izbora. Vožnja je uključena po zadanim postavkama i ne preskače se automatski zbog sistemske postavke smanjenog kretanja. Korisnik je može isključiti vidljivim dugmetom. „Ponovi dolazak“ ponavlja video, a „Pokreni video“ je vidljiv ako reprodukcija ne uspije. Hero nema fotografiju kao zamjenu za video; fotografije se koriste samo u katalogu vozila.
+Video kontroler koristi dva video elementa i obrađuje brze promjene izbora. Nakon dolaska prikazuje originalnu fotografiju `Auta/<vozilo>/02-parkirano.png`. Fotografija ostaje do novog odabira, zatim se otkriva pauzirani video i nastavlja odlazak. Tek nakon odlaska kreće dolazak narednog auta. Fotografije su kopirane u `dist/assets`, bez promjene originala. Vožnja je uključena po zadanim postavkama; korisnik je može isključiti vidljivim dugmetom. „Ponovi dolazak“ ponavlja video, a „Pokreni video“ je vidljiv ako reprodukcija ne uspije.
 
 Četiri originalna videa sadrže dolazak i odlazak. Jetta, Peugeot i kombi počinju parkirani; njihov dolazak je dodatna kompozitna animacija iz prvog kadra. Izvorni AI klipovi imaju sitne razlike u pozadini, pa kontinuitet ulice nije piksel-identičan. Originali u roditeljskom folderu ostaju sačuvani.
 

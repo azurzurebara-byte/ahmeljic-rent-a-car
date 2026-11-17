@@ -1,4 +1,4 @@
-import {CarScene} from './video-controller.js';
+import {CarScene} from './video-controller.js?v=3';
 export const cars=[
  {name:'Volkswagen Golf Plus',make:'Volkswagen',category:'Kompakt',body:'Monovolumen',file:'golf',price:65,stop:3.15,depart:3.15,description:'Više prostora za svakodnevne planove. Tvoj praktični saputnik.'},
  {name:'Seat Leon',make:'Seat',category:'Gradski izbor',body:'Hatchback',file:'seat',price:60,stop:2.1,depart:2.1,description:'Kompaktan, upečatljiv i spreman za tvoju sljedeću destinaciju.'},
@@ -11,12 +11,28 @@ export const cars=[
 const $=id=>document.getElementById(id),select=$('car-select'),pickup=$('pickup'),dropoff=$('return');
 const money=value=>value===null?'Priceless':new Intl.NumberFormat('bs-BA').format(value)+' KM';
 const price=car=>money(car.price)+(car.price===null?'':' / dan');
+const parkedFiles=['Golf-Plus','Seat','Mazda','Passat','Jetta','Peugeot','Kombi'];
+const parkedPhotos=parkedFiles.map((file,index)=>{const img=new Image();img.src=`assets/${file}.png`;img.alt=cars[index].name+' — parkirano vozilo';img.className='parked-photo';return img;});
+let visiblePhoto=null;
 // Driving is the explicitly requested interaction, including on devices that
 // prefer reduced decorative motion. The visible control lets visitors opt out.
 const scene=new CarScene([$('video-a'),$('video-b')],cars,(text,failed=false)=>{
  $('scene-status').textContent=text;$('retry').hidden=!failed;
  $('start-video').hidden=!failed;
  $('replay-video').disabled=scene.busy&&!failed;
+},{
+ onPark:async index=>{
+  const photo=parkedPhotos[index];
+  try{await photo.decode();}catch{return;}
+  document.querySelector('.scene').append(photo);
+  visiblePhoto?.classList.remove('visible');visiblePhoto=photo;
+  photo.classList.add('visible');
+ },
+ onDrive:async()=>{
+  if(!visiblePhoto)return;
+  visiblePhoto.classList.remove('visible');visiblePhoto=null;
+  await new Promise(resolve=>setTimeout(resolve,180));
+ }
 });
 cars.forEach((car,index)=>{
  const option=document.createElement('option');option.value=index;option.textContent=car.name;select.append(option);
