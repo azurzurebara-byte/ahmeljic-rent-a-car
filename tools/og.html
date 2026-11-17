@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<title>og:image 1200x630</title>
+<!-- Slika za dijeljenje linka (Viber, WhatsApp, Facebook). Izrada: vidi README, "Slika za dijeljenje". -->
+<style>
+  @font-face { font-family: 'Manrope'; font-weight: 600 800; src: url(../dist/assets/fonts/manrope-latin.woff2) format('woff2'); unicode-range: U+0000-00FF; }
+  @font-face { font-family: 'Manrope'; font-weight: 600 800; src: url(../dist/assets/fonts/manrope-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA; }
+  @font-face { font-family: 'DM Sans'; font-weight: 400 700; src: url(../dist/assets/fonts/dm-sans-latin.woff2) format('woff2'); unicode-range: U+0000-00FF; }
+  @font-face { font-family: 'DM Sans'; font-weight: 400 700; src: url(../dist/assets/fonts/dm-sans-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  .card { position: relative; width: 1200px; height: 630px; overflow: hidden; border-top: 10px solid #c91420; background: #f4f2ec; font-family: 'DM Sans', Arial, sans-serif; color: #191919; }
+  .street { position: absolute; right: -60px; bottom: 0; width: 1120px; height: 630px; object-fit: cover; object-position: 70% 60%; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(90deg, #f4f2ec 0%, #f4f2ec 34%, rgba(244, 242, 236, .86) 46%, rgba(244, 242, 236, 0) 66%); }
+  .car { position: absolute; right: 24px; bottom: 34px; width: 640px; filter: drop-shadow(0 14px 12px rgba(11, 23, 27, .35)); }
+  .text { position: absolute; left: 72px; top: 76px; width: 560px; }
+  .logo { display: block; width: 330px; height: 110px; object-fit: contain; object-position: left; margin-left: -6px; }
+  h1 { margin-top: 44px; font-family: 'Manrope', Arial, sans-serif; font-size: 62px; font-weight: 800; line-height: 1.08; letter-spacing: -.025em; }
+  p { margin-top: 26px; font-size: 34px; font-weight: 600; color: #494740; }
+  .phones { position: absolute; left: 72px; bottom: 66px; padding: 12px 22px; border-radius: 6px; background: #f2bf00; font-size: 34px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="card">
+  <img class="street" src="../dist/assets/street.webp" alt="">
+  <div class="shade"></div>
+  <img class="car" src="../dist/assets/cutouts/seat.webp" alt="">
+  <div class="text">
+    <img class="logo" src="../dist/assets/ahmeljic-logo.webp" alt="Ahmeljić Auto">
+    <h1>Dobar put počinje dobrim izborom.</h1>
+    <p>Rent a car · cijene po danu</p>
+  </div>
+  <div class="phones">061 762 218 · 062 351 900</div>
+</div>
+</body>
+</html>

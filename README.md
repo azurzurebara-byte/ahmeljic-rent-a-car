@@ -2,16 +2,44 @@
 
 Pokretanje: `npm start`, zatim otvoriti http://127.0.0.1:4173. Nisu potrebne biblioteke za prikaz sajta. Testovi: `npm test`.
 
-Sajt je u `dist/`. Cijene i nazivi su u `dist/app.js`. Cijene su KM po danu; kombi je Priceless. Kontakt nije dostavljen pa obrazac daje lokalni pregled, ne šalje rezervaciju.
+Objavljuje se samo folder `dist/`.
 
-Hero koristi jednu nepomičnu ulicu i izdvojene prozirne slike auta. Web Animations API pomjera samo automobil i njegovu sjenu: dolazak s desne strane uz usporavanje, mirovanje do novog izbora, pa odlazak ulijevo. Kretanje je 2.5D stilizacija, ne simulacija fizičke vožnje; točkovi se ne rotiraju zasebno. Pozadina se ne mijenja pri izboru vozila. `dist/car-scene.js` upravlja sekvencom i brzim promjenama izbora. „Ponovi dolazak“ ponavlja odlazak/dolazak, a „Isključi vožnju“ daje statičan prikaz.
+## Šta gdje mijenjati
 
-Ulica je kopija `Auta/Golf-Plus/01-start.png`. Prozirna vozila su u `dist/assets/cutouts/`. Izrađena su ugrađenim imagegen alatom iz fotografija `Auta/<vozilo>/02-parkirano.png`. Izvori i promptovi su opisani u `ASSETS.md`. Originalne fotografije i videi u roditeljskom folderu ostaju sačuvani.
+| Šta | Gdje |
+|---|---|
+| Telefoni, WhatsApp, Viber | `dist/app.js`, objekat `contact` na vrhu fajla |
+| Vozila: naziv, klasa, opis, cijena (KM po danu; `null` = Priceless) | `dist/app.js`, lista `cars` |
+| Tekstovi sekcija | `dist/index.html` |
+| Boje, fontovi, veličine | `dist/style.css`, varijable u `:root` na vrhu |
+| Fotografije po vozilu | `dist/photo-data.js` i `dist/assets/photos/` |
 
-Nema runtime biblioteka ni video datoteka u objavljenoj verziji. Položaj i veličina auta te trajanje animacija podešavaju se u `StreetView` klasi. Zajednička koordinatna ravnina prilagođava se veličini prozora pomoću `ResizeObserver`.
+Kontakt: brojevi 061 762 218 i 062 351 900 prepisani su s tablica "Ahmeljić Auto" na fotografiji Seata. WhatsApp i Viber su postavljeni na prvi broj; ako broj nije na tim aplikacijama, upiši `''` i opcija nestaje. Adresa nije poznata pa je nema na stranici.
 
-Identitet: `dist/brand.css` koristi crnu, crvenu i žuto-zlatnu paletu loga s tablica. `dist/assets/ahmeljic-logo.png` je imagegen rekonstrukcija loga prema stvarnoj fotografiji Seata, ne originalni vektorski fajl.
+## Kako stranica radi
 
-Stvarne fotografije: 27 originalnih JPG datoteka kopirano je bez izmjena iz `Kola/` u `dist/assets/photos/`. `photo-sources.json` čuva mapiranje izvora, a `dist/photo-data.js` sadrži galerije po vozilu. Dostupne su iz hero forme i kartica vozila. Galerija podržava strelice, sličice, Escape, fokus i otvaranje originala. Golf nema galeriju prema korisnikovoj uputi.
+Hero koristi jednu nepomičnu ulicu i izdvojene prozirne slike auta. Web Animations API pomjera samo automobil i njegovu sjenu: dolazak s desne strane uz usporavanje, mirovanje do novog izbora, pa odlazak ulijevo. Kretanje je 2.5D stilizacija, ne simulacija fizičke vožnje. Pozadina se ne mijenja pri izboru vozila. `dist/car-scene.js` upravlja sekvencom i brzim promjenama izbora. "Ponovi dolazak" ponavlja odlazak i dolazak, a "Isključi vožnju" daje statičan prikaz.
 
-Provjera: sedam testova sekvence, brzih promjena izbora, grešaka, ponavljanja, isključivanja pokreta i izvora hero sekcije. Svaki cutout je vizuelno pregledan i provjeren je RGBA alpha kanal. Interaktivna provjera u pregledniku nije provedena jer nema povezanog preglednika u ovoj sesiji.
+Rasporedi: iznad 1050 px forma je lijevo, a auto desno. Do 1050 px ulica je gore, a forma ispod. Do 700 px (telefon) forma je kompaktna, auto je na sredini ulice, a u headeru je dugme "Pozovi". Položaj ulice računa `layoutStage` u `dist/app.js`; položaj i veličina auta te trajanje animacija su u klasi `StreetView`.
+
+"Pošalji upit" otvara pregled (vozilo, datumi, iznos) s dugmadima: WhatsApp s popunjenom porukom, Viber (poruka se usput kopira), poziv i "Kopiraj poruku". Stranica ništa ne šalje sama i nema server.
+
+Stvarne fotografije: 27 originalnih JPG datoteka kopirano je bez izmjena iz `Kola/` u `dist/assets/photos/` (`photo-sources.json` čuva mapiranje). Galerija prikazuje lakše kopije (`NN-view.webp`, `NN-thumb.webp`), a "Otvori original" vodi na netaknuti JPG. Golf nema galeriju prema korisnikovoj uputi.
+
+## Slike
+
+Izvorne slike pune veličine su u `assets-src/` (ulica, prozirna vozila, logo) i ne objavljuju se. `npm run images` iz njih pravi WebP verzije u `dist/assets/` (ulica u 3 širine, svako vozilo u 3 širine, logo, kopije fotografija). Skripta `tools/build-images.cjs` treba paket `sharp`; traži ga i u `../sajt/tools/node_modules`.
+
+Ulica je kopija `Auta/Golf-Plus/01-start.png`. Prozirna vozila su izrađena imagegen alatom iz fotografija `Auta/<vozilo>/02-parkirano.png`; izvori i promptovi su u `ASSETS.md`. Logo je imagegen rekonstrukcija prema fotografiji Seata, ne originalni vektorski fajl.
+
+Pozadina iza auta u karticama voznog parka (`assets-src/codex/fleet-bg.png`) napravljena je Codex CLI-jem; opis koji je dobio je u `assets-src/codex/PROMPT.md`.
+
+Fontovi (DM Sans, Manrope; SIL Open Font License) služe se s ovog sajta iz `dist/assets/fonts/`, bez poziva prema Googleu.
+
+Slika za dijeljenje: `dist/assets/og.jpg` (1200x630) nastaje iz `tools/og.html`. `og:image` u `index.html` je relativna putanja; kad sajt dobije stalnu adresu, upisati punu (https://...), jer je neke mreže traže.
+
+## Provjera
+
+`npm test`: sekvenca dolaska i odlaska, brze promjene izbora, greške, ponavljanje, isključivanje pokreta, galerije, postojanje svih slika i izvora.
+
+Vizuelna provjera (design skill, headless Chrome) na 320, 375, 768, 1366x768 i 1440 px: 0 blokera. Snimci i izvještaji su u `qa/design-check/` (folder `qa/` se ne objavljuje).

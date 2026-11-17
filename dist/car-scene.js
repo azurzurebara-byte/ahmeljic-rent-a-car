@@ -29,7 +29,9 @@ export class StreetView {
  constructor(stage,cars){this.stage=stage;this.cars=cars;this.images=new Map();this.vehicle=null;this.animation=null;}
  async prepare(index){
   if(!this.images.has(index)){
-   const img=new Image();img.src=`assets/cutouts/${this.cars[index].file}.png`;img.alt=this.cars[index].name;img.draggable=false;
+   const img=new Image(),base=`assets/cutouts/${this.cars[index].file}`;
+   // Phones get the 640 px file, laptops the 960 px one, large or dense screens the full one.
+   img.width=1672;img.height=941;img.sizes='(max-width: 700px) 75vw, (max-width: 1050px) 60vw, 50vw';img.srcset=`${base}-640.webp 640w, ${base}-960.webp 960w, ${base}.webp 1672w`;img.src=`${base}.webp`;img.alt=this.cars[index].name;img.draggable=false;
    this.images.set(index,img);
   }
   const img=this.images.get(index);

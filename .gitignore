@@ -3,3 +3,4 @@ node_modules/
 qa/
 *.tar.gz
 *.tar
+tools/.work/
