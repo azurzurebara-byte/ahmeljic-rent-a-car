@@ -2,12 +2,12 @@
 
 Pokretanje: `npm start`, zatim otvoriti http://127.0.0.1:4173. Nisu potrebne biblioteke za prikaz sajta. Testovi: `npm test`.
 
-Sajt je u `dist/`. Cijene, nazivi i trenutak zaustavljanja (`stop`) / početak odlaska (`depart`) su u `dist/app.js`. Cijene su KM po danu; kombi je Priceless. Kontakt nije dostavljen pa obrazac daje lokalni pregled, ne šalje rezervaciju.
+Sajt je u `dist/`. Cijene i nazivi su u `dist/app.js`. Cijene su KM po danu; kombi je Priceless. Kontakt nije dostavljen pa obrazac daje lokalni pregled, ne šalje rezervaciju.
 
-Video kontroler koristi dva video elementa i obrađuje brze promjene izbora. Nakon dolaska prikazuje originalnu fotografiju `Auta/<vozilo>/02-parkirano.png`. Fotografija ostaje do novog odabira, zatim se otkriva pauzirani video i nastavlja odlazak. Tek nakon odlaska kreće dolazak narednog auta. Fotografije su kopirane u `dist/assets`, bez promjene originala. Vožnja je uključena po zadanim postavkama; korisnik je može isključiti vidljivim dugmetom. „Ponovi dolazak“ ponavlja video, a „Pokreni video“ je vidljiv ako reprodukcija ne uspije.
+Hero koristi jednu nepomičnu ulicu i izdvojene prozirne slike auta. Web Animations API pomjera samo automobil i njegovu sjenu: dolazak s desne strane uz usporavanje, mirovanje do novog izbora, pa odlazak ulijevo. Kretanje je 2.5D stilizacija, ne simulacija fizičke vožnje; točkovi se ne rotiraju zasebno. Pozadina se ne mijenja pri izboru vozila. `dist/car-scene.js` upravlja sekvencom i brzim promjenama izbora. „Ponovi dolazak“ ponavlja odlazak/dolazak, a „Isključi vožnju“ daje statičan prikaz.
 
-Četiri originalna videa sadrže dolazak i odlazak. Jetta, Peugeot i kombi počinju parkirani; njihov dolazak je dodatna kompozitna animacija iz prvog kadra. Izvorni AI klipovi imaju sitne razlike u pozadini, pa kontinuitet ulice nije piksel-identičan. Originali u roditeljskom folderu ostaju sačuvani.
+Ulica je kopija `Auta/Golf-Plus/01-start.png`. Prozirna vozila su u `dist/assets/cutouts/`. Izrađena su ugrađenim imagegen alatom iz fotografija `Auta/<vozilo>/02-parkirano.png`. Izvori i promptovi su opisani u `ASSETS.md`. Originalne fotografije i videi u roditeljskom folderu ostaju sačuvani.
 
-`prepare-videos.cjs` regeneriše web kopije uz FFmpeg (`npm install`). Za ponovnu obradu potreban je izvorni roditeljski folder sa MP4 klipovima i Auta/Golf-Plus/01-start.png. Pokrenuti iz korijena ovog projekta, uz postojeći `qa/` folder.
+Nema runtime biblioteka ni video datoteka u objavljenoj verziji. Položaj i veličina auta te trajanje animacija podešavaju se u `StreetView` klasi. Zajednička koordinatna ravnina prilagođava se veličini prozora pomoću `ResizeObserver`.
 
-Provjera: testovi logike kontrolera, vizuelni pregled izdvojenih kadrova i HTTP provjere. Interaktivna provjera u pregledniku nije provedena jer nema povezanog preglednika u ovoj sesiji.
+Provjera: sedam testova sekvence, brzih promjena izbora, grešaka, ponavljanja, isključivanja pokreta i izvora hero sekcije. Svaki cutout je vizuelno pregledan i provjeren je RGBA alpha kanal. Interaktivna provjera u pregledniku nije provedena jer nema povezanog preglednika u ovoj sesiji.
