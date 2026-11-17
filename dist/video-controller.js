@@ -9,7 +9,11 @@ export class CarScene {
   }
   select(index){this.desired=index;return this.run();}
   async prepare(video,car){
-    video.pause();video.src=`assets/${car.file}.mp4`;video.poster=`assets/${car.file}-poster.jpg`;
+    video.pause();
+    // Keep an already decoded source on retries; do not reload it after a click.
+    if(video.dataset?.car===car.file&&video.readyState>=2){await this.seek(video,0);return;}
+    video.src=`assets/${car.file}.mp4`;
+    if(video.dataset)video.dataset.car=car.file;
     await new Promise((resolve,reject)=>{
       const timer=setTimeout(()=>done(new Error('load timeout')),20000);
       const done=error=>{clearTimeout(timer);video.removeEventListener('loadeddata',loaded);video.removeEventListener('error',failed);error?reject(error):resolve();};
@@ -66,11 +70,13 @@ export class CarScene {
         this.show(next);this.current=index;
         if(!this.reducedMotion){this.onStatus('Dolazi '+car.name+'…');await this.playUntil(next,car.stop);}
       }
-      this.onStatus(this.cars[this.current].name+' · Tvoj sljedeći kilometar');
+      this.busy=false;
+      this.onStatus(this.cars[this.current].name+' · Parkiran — promijeni vozilo za nastavak vožnje');
     } catch(error){
       this.failed=true;for(const v of this.players)v.pause();
-      this.onStatus('Video nije spreman. Pokušaj ponovo.',true);
+      this.onStatus('Video nije pokrenut. Pritisni „Pokreni video“.',true);
     } finally {this.busy=false;}
   }
   retry(){this.current=null;return this.run();}
+  replay(){if(this.busy)return;this.current=null;return this.run();}
 }
