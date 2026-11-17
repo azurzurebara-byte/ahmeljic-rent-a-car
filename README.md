@@ -36,10 +36,16 @@ Pozadina iza auta u karticama voznog parka (`assets-src/codex/fleet-bg.png`) nap
 
 Fontovi (DM Sans, Manrope; SIL Open Font License) služe se s ovog sajta iz `dist/assets/fonts/`, bez poziva prema Googleu.
 
-Slika za dijeljenje: `dist/assets/og.jpg` (1200x630) nastaje iz `tools/og.html`. `og:image` u `index.html` je relativna putanja; kad sajt dobije stalnu adresu, upisati punu (https://...), jer je neke mreže traže.
+Slika za dijeljenje: `dist/assets/og.jpg` (1200x630) nastaje iz `tools/og.html`. `og:image` u `index.html` pokazuje na GitHub Pages adresu; ako se adresa promijeni, promijeniti i nju.
 
 ## Provjera
 
 `npm test`: sekvenca dolaska i odlaska, brze promjene izbora, greške, ponavljanje, isključivanje pokreta, galerije, postojanje svih slika i izvora.
 
 Vizuelna provjera (design skill, headless Chrome) na 320, 375, 768, 1366x768 i 1440 px: 0 blokera. Snimci i izvještaji su u `qa/design-check/` (folder `qa/` se ne objavljuje).
+
+## Objava
+
+- Javno: GitHub Pages, https://azurzurebara-byte.github.io/ahmeljic-rent-a-car/ (grana `gh-pages` = sadržaj foldera `dist/`).
+  Nova verzija: commit na `main`, pa `git subtree split --prefix dist -b gh-pages` i `git push -f origin gh-pages`.
+- ChatGPT Sites (privatno): https://ahmeljic-rent-a-car.aramun.chatgpt.site/, objavljuje Codex.
