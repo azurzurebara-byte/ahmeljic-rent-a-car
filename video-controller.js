@@ -1,9 +1,9 @@
 // Each clip contains an arrival, a parked frame, and a departure.
 // Selection requests are coalesced; only one transition owns the two players.
 export class CarScene {
-  constructor(players,cars,onStatus,{reducedMotion=false}={}) {
+  constructor(players,cars,onStatus,{reducedMotion=false,onPark=()=>{},onDrive=()=>{}}={}) {
     this.players=players;this.cars=cars;this.onStatus=onStatus;
-    this.reducedMotion=reducedMotion;this.current=null;this.desired=0;
+    this.reducedMotion=reducedMotion;this.onPark=onPark;this.onDrive=onDrive;this.current=null;this.desired=0;
     this.active=players[0];this.busy=false;this.failed=false;
     for(const v of players){v.muted=true;v.playsInline=true;}
   }
@@ -51,9 +51,10 @@ export class CarScene {
     try {
       if(this.current===null){
         const index=this.desired,car=this.cars[index];this.onStatus('Dolazi '+car.name+'…');
-        await this.prepare(this.active,car);this.show(this.active);
+        await this.prepare(this.active,car);this.show(this.active);await this.onDrive();
         if(this.reducedMotion)await this.seek(this.active,car.stop);else await this.playUntil(this.active,car.stop);
         this.current=index;
+        await this.onPark(index);
       }
       while(this.desired!==this.current){
         const index=this.desired,car=this.cars[index],next=this.players.find(v=>v!==this.active);
@@ -64,11 +65,13 @@ export class CarScene {
           this.onStatus('Trenutni automobil odlazi…');
           const old=this.cars[this.current];
           if(old.depart>this.active.currentTime)await this.seek(this.active,old.depart);
+          await this.onDrive();
           await this.playUntil(this.active,this.active.duration-0.06);
         }
         if(this.reducedMotion)await this.seek(next,car.stop);
         this.show(next);this.current=index;
         if(!this.reducedMotion){this.onStatus('Dolazi '+car.name+'…');await this.playUntil(next,car.stop);}
+        await this.onPark(index);
       }
       this.busy=false;
       this.onStatus(this.cars[this.current].name+' · Parkiran — promijeni vozilo za nastavak vožnje');
