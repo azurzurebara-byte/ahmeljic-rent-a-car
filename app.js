@@ -103,6 +103,7 @@ cars.forEach((car, index) => {
 });
 
 /* ---------- Contact ---------- */
+const PHONE_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.57 3.6a1 1 0 0 1-.25 1l-2.2 2.2Z"/></svg>';
 const firstPhone = contact.phones[0];
 if (firstPhone) {
   $('fleet-grid').append(el('article', {className: 'fleet-card fleet-help'},
@@ -124,6 +125,11 @@ const contactRow = (href, label, value, action, external) => {
   if (external) Object.assign(row, {target: '_blank', rel: 'noopener'});
   return row;
 };
+// Red bar above the header: every number on desktop, the first one on phones.
+contact.phones.forEach((phone, index) => {
+  $('topbar').append(el('a', {href: telHref(phone), className: index ? 'topbar-more' : '', innerHTML: PHONE_ICON + '<span>' + phone + '</span>'}));
+});
+
 contact.phones.forEach(phone => {
   $('contact-list').append(contactRow(telHref(phone), 'Telefon', phone, 'Pozovi'));
   $('footer-phones').append(el('a', {href: telHref(phone), textContent: phone}));
