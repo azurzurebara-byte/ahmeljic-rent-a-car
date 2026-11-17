@@ -1,8 +1,177 @@
 <!doctype html>
-<html lang="bs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Ahmeljić Rent a Car — odaberite automobil za svoje sljedeće putovanje."><title>Ahmeljić — Vaš put. Vaš izbor.</title><link rel="stylesheet" href="style.css?v=4"><link rel="stylesheet" href="brand.css?v=5"><script src="app.js?v=5" type="module"></script></head>
-<body><header class="header"><a class="brand" href="#" aria-label="Ahmeljić Auto — početna"><img src="assets/ahmeljic-logo.png" alt="Ahmeljić Auto" width="2150" height="717"><span class="brand-caption">Rent a car</span></a><nav aria-label="Glavna navigacija"><a href="#vozila">Naša vozila</a><a href="#kako">Kako iznajmiti</a></nav><a class="header-cta" href="#izbor">Pronađi svoj auto <span>↗</span></a></header>
-<main><section class="hero" id="izbor" aria-label="Odaberite automobil"><div class="scene"><div id="street-stage" class="street-stage"><img class="street-background" src="assets/street.png" alt="" fetchpriority="high" width="1672" height="941"></div><div class="scene-shade"></div></div><div class="scene-controls"><button id="replay-scene" type="button">&#9654; Ponovi dolazak</button><button id="motion-toggle" type="button" aria-pressed="false">Isklju&#269;i vo&#382;nju</button></div>
-<div class="hero-content"><h1>Dobar put počinje<br>dobrim izborom.</h1><p class="intro">Odaberi automobil. Zamisli putovanje.</p><form id="rental-form" class="rental-panel"><label for="car-select">Koji auto voziš sljedeći?</label><div class="select-wrap"><select id="car-select" name="car"></select><span aria-hidden="true">⌄</span></div><div class="car-info" aria-live="polite"><div class="car-title"><h2 id="car-name">Volkswagen Golf Plus</h2><span id="car-category">Kompakt</span></div><p id="car-description">Praktičan izbor za grad i putovanja.</p><dl><div><dt>Marka</dt><dd id="car-make">Volkswagen</dd></div><div><dt>Karoserija</dt><dd id="car-body">Monovolumen</dd></div><div><dt>Najam po danu</dt><dd id="car-price">65 KM</dd></div></dl></div><button id="hero-gallery" class="photo-button" type="button" hidden></button><div class="dates"><div><label for="pickup">Preuzimanje</label><input type="date" id="pickup" required></div><div><label for="return">Povrat</label><input type="date" id="return" required></div></div><p id="estimate" class="estimate"></p><button class="primary" type="submit">Pregledaj odabir <span>↗</span></button><p class="form-note">Dostupnost potvrđujemo prije rezervacije.</p></form></div><div class="scene-caption"><span class="status-dot"></span><span id="scene-status" role="status">Pripremamo tvoj automobil…</span><button type="button" id="retry" hidden>Pokušaj ponovo</button></div><div class="scene-index"><span id="car-number">01</span><span class="index-line"></span><span>07</span></div></section>
-<section class="fleet section" id="vozila"><div class="section-heading"><div><p class="eyebrow">Naša garaža</p><h2>Za svaki plan,<br>pravi automobil.</h2></div><p>Gradske ulice, vikend van grada ili više prostora za ekipu. Upoznaj vozila, pogledaj njihove stvarne fotografije i pronađi svoj izbor.</p></div><div id="fleet-grid" class="fleet-grid"></div></section><section class="how section" id="kako"><h2>Ti biraš destinaciju.<br>Krenimo od automobila.</h2><div class="steps"><article><span>01</span><h3>Odaberi vozilo</h3><p>Pogledaj automobile i odaberi onaj koji odgovara tvom putovanju.</p></article><article><span>02</span><h3>Planiraj datume</h3><p>Unesi datum preuzimanja i povrata da vidiš iznos najma.</p></article><article><span>03</span><h3>Potvrdi detalje</h3><p>Dostupnost i uslovi najma dogovaraju se prije rezervacije.</p></article></div></section></main>
-<footer><a class="brand" href="#" aria-label="Ahmeljić Auto — početna"><img src="assets/ahmeljic-logo.png" alt="Ahmeljić Auto" width="2150" height="717"></a><p>Vaš put. Vaš izbor.</p><a href="#izbor">Odaberi automobil ↑</a></footer><dialog id="summary"><button class="close" type="button" aria-label="Zatvori">×</button><p class="eyebrow">Tvoje putovanje</p><h2>Odabir je spreman.</h2><div id="summary-content"></div><p class="summary-note">Ovo je pregled odabira, a ne potvrđena rezervacija. Slanje upita bit će dostupno nakon dodavanja kontakta agencije.</p><button class="primary close-summary" type="button">Nastavi pregledati</button></dialog><dialog id="photo-gallery" class="photo-gallery" aria-labelledby="gallery-title"><header class="gallery-header"><div><p>Stvarne fotografije vozila</p><h2 id="gallery-title"></h2></div><button type="button" id="gallery-close" aria-label="Zatvori galeriju" autofocus>×</button></header><div class="gallery-stage"><button type="button" id="gallery-prev" aria-label="Prethodna fotografija">‹</button><img id="gallery-image" alt=""><p id="gallery-error" hidden>Fotografija nije učitana. Otvori original ili izaberi drugu fotografiju.</p><button type="button" id="gallery-next" aria-label="Sljedeća fotografija">›</button></div><div class="gallery-meta"><span id="gallery-count" role="status" aria-live="polite"></span><a id="gallery-original" target="_blank" rel="noopener">Otvori original ↗</a></div><div id="gallery-thumbs" class="gallery-thumbs" aria-label="Odaberi fotografiju"></div></dialog></body></html>
+<html lang="bs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ahmeljić Rent a Car · Vaš put. Vaš izbor.</title>
+  <meta name="description" content="Ahmeljić Rent a Car: odaberi automobil, unesi datume i pošalji upit. Sedam vozila, cijene po danu, stvarne fotografije.">
+  <meta name="theme-color" content="#c91420">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="bs_BA">
+  <meta property="og:site_name" content="Ahmeljić Rent a Car">
+  <meta property="og:title" content="Ahmeljić Rent a Car · Vaš put. Vaš izbor.">
+  <meta property="og:description" content="Odaberi automobil, unesi datume i pošalji upit. Sedam vozila, cijene po danu, stvarne fotografije.">
+  <meta property="og:image" content="assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/dm-sans-latin.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/manrope-latin.woff2" crossorigin>
+  <link rel="preload" as="image" type="image/webp" href="assets/street.webp" imagesrcset="assets/street-960.webp 960w, assets/street-1280.webp 1280w, assets/street.webp 1672w" imagesizes="100vw" fetchpriority="high">
+  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="modulepreload" href="car-scene.js?v=7">
+  <link rel="modulepreload" href="gallery.js?v=7">
+  <link rel="modulepreload" href="photo-data.js">
+  <script src="app.js?v=9" type="module"></script>
+</head>
+<body>
+<a class="skip-link" href="#izbor">Preskoči na izbor vozila</a>
 
+<header class="header">
+  <a class="brand" href="#" aria-label="Ahmeljić Auto, rent a car: početna">
+    <img src="assets/ahmeljic-logo.webp" alt="Ahmeljić Auto" width="132" height="44">
+    <span class="brand-caption">Rent a car</span>
+  </a>
+  <nav aria-label="Glavna navigacija">
+    <a href="#vozila">Naša vozila</a>
+    <a href="#kako">Kako iznajmiti</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+  <a class="header-cta" href="#izbor">Pronađi svoj auto <span aria-hidden="true">↗</span></a>
+  <a class="header-call" id="header-call" hidden></a>
+</header>
+<noscript><p class="noscript">Za izbor vozila i datuma uključi JavaScript, ili nas pozovi: 061 762 218, 062 351 900.</p></noscript>
+
+<main>
+  <section class="hero" id="izbor" aria-label="Odaberi automobil">
+    <div class="scene">
+      <div id="street-stage" class="street-stage">
+        <img class="street-background" src="assets/street.webp" srcset="assets/street-960.webp 960w, assets/street-1280.webp 1280w, assets/street.webp 1672w" sizes="100vw" alt="" fetchpriority="high" width="1672" height="941">
+      </div>
+      <div class="scene-shade"></div>
+    </div>
+
+    <div class="scene-controls">
+      <button id="replay-scene" type="button"><span aria-hidden="true">▶</span> Ponovi dolazak</button>
+      <button id="motion-toggle" type="button" aria-pressed="false">Isključi vožnju</button>
+    </div>
+
+    <div class="hero-content">
+      <h1><span class="mark">Dobar put</span> počinje<br>dobrim <span class="mark">izborom.</span></h1>
+      <p class="intro">Odaberi automobil. Zamisli putovanje.</p>
+
+      <form id="rental-form" class="rental-panel">
+        <label for="car-select">Koji auto voziš sljedeći?</label>
+        <div class="select-wrap">
+          <select id="car-select" name="car"></select>
+          <span aria-hidden="true">⌄</span>
+        </div>
+
+        <div class="car-info">
+          <div class="car-title">
+            <h2 id="car-name">Volkswagen Golf Plus</h2>
+            <span id="car-category" class="chip">Kompakt</span>
+            <strong id="car-price-mobile" class="price-mobile"></strong>
+            <button id="hero-gallery" class="photo-link" type="button" hidden></button>
+          </div>
+          <p id="car-description">Više prostora za svakodnevne planove. Tvoj praktični saputnik.</p>
+          <dl>
+            <div><dt>Marka</dt><dd id="car-make">Volkswagen</dd></div>
+            <div><dt>Karoserija</dt><dd id="car-body">Monovolumen</dd></div>
+            <div><dt>Najam po danu</dt><dd id="car-price">65 KM</dd></div>
+          </dl>
+        </div>
+
+        <div class="dates">
+          <div><label for="pickup">Preuzimanje</label><input type="date" id="pickup" required></div>
+          <div><label for="return">Povrat</label><input type="date" id="return" required></div>
+        </div>
+
+        <p id="estimate" class="estimate" aria-live="polite"></p>
+        <button class="primary" type="submit">Pošalji upit <span aria-hidden="true">↗</span></button>
+        <p class="form-note">Dostupnost potvrđujemo prije rezervacije.</p>
+      </form>
+    </div>
+
+    <div class="scene-caption">
+      <span class="status-dot"></span>
+      <span id="scene-status" role="status">Pripremamo tvoj automobil…</span>
+      <button type="button" id="retry" hidden>Pokušaj ponovo</button>
+    </div>
+    <div class="scene-index" aria-hidden="true"><span id="car-number">01</span><span class="index-line"></span><span>07</span></div>
+  </section>
+
+  <section class="fleet section" id="vozila">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Naša garaža</p>
+        <h2>Za svaki plan,<br>pravi automobil.</h2>
+      </div>
+      <p>Gradske ulice, vikend van grada ili više prostora za ekipu. Upoznaj vozila, pogledaj njihove stvarne fotografije i pronađi svoj izbor.</p>
+    </div>
+    <div id="fleet-grid" class="fleet-grid"></div>
+  </section>
+
+  <section class="how" id="kako">
+    <div class="how-inner">
+      <h2>Ti biraš destinaciju.<br>Krenimo od automobila.</h2>
+      <ol class="steps">
+        <li><span aria-hidden="true">01</span><h3>Odaberi vozilo</h3><p>Pogledaj automobile i odaberi onaj koji odgovara tvom putovanju.</p></li>
+        <li><span aria-hidden="true">02</span><h3>Unesi datume</h3><p>Datum preuzimanja i povrata odmah pokazuju iznos najma.</p></li>
+        <li><span aria-hidden="true">03</span><h3>Pošalji upit</h3><p>Javi nam se porukom ili pozivom. Dostupnost i uslove potvrđujemo prije rezervacije.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="contact section" id="kontakt">
+    <div>
+      <p class="eyebrow">Kontakt</p>
+      <h2>Nazovi ili<br>pošalji poruku.</h2>
+      <p class="contact-lead">Reci nam koje vozilo i koje datume želiš. Dostupnost i uslove najma potvrđujemo prije rezervacije.</p>
+    </div>
+    <div id="contact-list" class="contact-list"></div>
+  </section>
+</main>
+
+<footer>
+  <a class="brand" href="#" aria-label="Ahmeljić Auto, rent a car: početna">
+    <img src="assets/ahmeljic-logo.webp" alt="Ahmeljić Auto" width="132" height="44" loading="lazy">
+  </a>
+  <p>Vaš put. Vaš izbor.</p>
+  <p id="footer-phones" class="footer-phones"></p>
+  <a class="to-top" href="#izbor">Odaberi automobil <span aria-hidden="true">↑</span></a>
+</footer>
+
+<dialog id="summary" aria-labelledby="summary-title">
+  <button class="close" type="button" aria-label="Zatvori">×</button>
+  <p class="eyebrow">Tvoj upit</p>
+  <h2 id="summary-title">Provjeri i pošalji.</h2>
+  <div id="summary-content"></div>
+  <div id="send-actions" class="send-actions"></div>
+  <p id="send-status" class="send-status" role="status"></p>
+  <p class="summary-note">Ovo je upit, a ne potvrđena rezervacija. Dostupnost i uslove potvrđujemo u odgovoru.</p>
+</dialog>
+
+<dialog id="photo-gallery" class="photo-gallery" aria-labelledby="gallery-title">
+  <header class="gallery-header">
+    <div>
+      <p>Stvarne fotografije vozila</p>
+      <h2 id="gallery-title"></h2>
+    </div>
+    <button type="button" id="gallery-close" aria-label="Zatvori galeriju" autofocus>×</button>
+  </header>
+  <div class="gallery-stage">
+    <button type="button" id="gallery-prev" aria-label="Prethodna fotografija">‹</button>
+    <img id="gallery-image" alt="" width="1280" height="960">
+    <p id="gallery-error" hidden>Fotografija nije učitana. Otvori original ili izaberi drugu fotografiju.</p>
+    <button type="button" id="gallery-next" aria-label="Sljedeća fotografija">›</button>
+  </div>
+  <div class="gallery-meta">
+    <span id="gallery-count" role="status" aria-live="polite"></span>
+    <a id="gallery-original" target="_blank" rel="noopener">Otvori original <span aria-hidden="true">↗</span></a>
+  </div>
+  <div id="gallery-thumbs" class="gallery-thumbs" aria-label="Odaberi fotografiju"></div>
+</dialog>
+</body>
+</html>

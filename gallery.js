@@ -6,13 +6,15 @@ export class GallerySelection {
  select(index){const count=this.images.length;if(count)this.index=((index%count)+count)%count;return this.images[this.index];}
  step(direction){return this.select(this.index+direction);}
 }
+// Lighter copies made by tools/build-images.cjs; the untouched original stays one click away.
+const variant=(src,kind)=>src.replace(/.jpg$/,`-${kind}.webp`);
 export function createGallery(){
  const $=id=>document.getElementById(id),dialog=$('photo-gallery'),model=new GallerySelection();
  let carName='',opener=null;
  function render(){
   $('gallery-error').hidden=true;
-  $('gallery-image').src=model.images[model.index];
-  $('gallery-image').alt=`${carName} — stvarna fotografija ${model.index+1} od ${model.images.length}`;
+  $('gallery-image').src=variant(model.images[model.index],'view');
+  $('gallery-image').alt=`${carName}, stvarna fotografija ${model.index+1} od ${model.images.length}`;
   $('gallery-count').textContent=`${model.index+1} / ${model.images.length}`;
   $('gallery-original').href=model.images[model.index];
   $('gallery-prev').disabled=$('gallery-next').disabled=model.images.length<=1;
@@ -28,7 +30,7 @@ export function createGallery(){
  return {open(car){
   if(!model.open(car.file))return;
   opener=document.activeElement;carName=car.name;$('gallery-title').textContent=carName;$('gallery-thumbs').replaceChildren();
-  model.images.forEach((src,i)=>{const button=document.createElement('button');button.type='button';button.setAttribute('aria-label',`Prikaži fotografiju ${i+1}`);const img=document.createElement('img');img.src=src;img.alt='';img.loading='lazy';button.append(img);button.addEventListener('click',()=>{model.select(i);render();});$('gallery-thumbs').append(button);});
+  model.images.forEach((src,i)=>{const button=document.createElement('button');button.type='button';button.setAttribute('aria-label',`Prikaži fotografiju ${i+1}`);const img=document.createElement('img');img.src=variant(src,'thumb');img.alt='';img.loading='lazy';img.width=240;img.height=180;button.append(img);button.addEventListener('click',()=>{model.select(i);render();});$('gallery-thumbs').append(button);});
   render();document.body.classList.add('gallery-open');dialog.showModal();
  }};
 }
