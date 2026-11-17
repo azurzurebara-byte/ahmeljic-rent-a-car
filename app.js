@@ -11,7 +11,13 @@ export const cars=[
 const $=id=>document.getElementById(id),select=$('car-select'),pickup=$('pickup'),dropoff=$('return');
 const money=value=>value===null?'Priceless':new Intl.NumberFormat('bs-BA').format(value)+' KM';
 const price=car=>money(car.price)+(car.price===null?'':' / dan');
-const scene=new CarScene([$('video-a'),$('video-b')],cars,(text,failed=false)=>{$('scene-status').textContent=text;$('retry').hidden=!failed;},{reducedMotion:matchMedia('(prefers-reduced-motion: reduce)').matches});
+// Driving is the explicitly requested interaction, including on devices that
+// prefer reduced decorative motion. The visible control lets visitors opt out.
+const scene=new CarScene([$('video-a'),$('video-b')],cars,(text,failed=false)=>{
+ $('scene-status').textContent=text;$('retry').hidden=!failed;
+ $('start-video').hidden=!failed;
+ $('replay-video').disabled=scene.busy&&!failed;
+});
 cars.forEach((car,index)=>{
  const option=document.createElement('option');option.value=index;option.textContent=car.name;select.append(option);
  const article=document.createElement('article');article.className='fleet-card';
@@ -28,6 +34,14 @@ function estimate(){const count=days(),car=cars[Number(select.value)];dropoff.se
 function update(){const index=Number(select.value),car=cars[index];for(const [id,value] of Object.entries({'car-name':car.name,'car-category':car.category,'car-description':car.description,'car-make':car.make,'car-body':car.body,'car-price':money(car.price),'car-number':String(index+1).padStart(2,'0')}))$(id).textContent=value;estimate();scene.select(index);}
 select.addEventListener('change',update);pickup.addEventListener('change',()=>{if(pickup.value){dropoff.min=plusDay(pickup.value);if(dropoff.value<=pickup.value)dropoff.value=dropoff.min;}estimate();});dropoff.addEventListener('change',estimate);
 $('retry').addEventListener('click',()=>scene.retry());
+$('start-video').addEventListener('click',()=>scene.retry());
+$('replay-video').addEventListener('click',()=>scene.replay());
+$('motion-toggle').addEventListener('click',()=>{
+ scene.reducedMotion=!scene.reducedMotion;
+ $('motion-toggle').textContent=scene.reducedMotion?'Uključi vožnju':'Isključi vožnju';
+ $('motion-toggle').setAttribute('aria-pressed',String(scene.reducedMotion));
+ if(!scene.reducedMotion)scene.replay();
+});
 $('rental-form').addEventListener('submit',event=>{event.preventDefault();estimate();if(!$('rental-form').reportValidity())return;const car=cars[Number(select.value)],format=value=>new Intl.DateTimeFormat('bs-BA',{dateStyle:'medium'}).format(new Date(value+'T12:00:00'));$('summary-content').replaceChildren();for(const line of [car.name,`${format(pickup.value)} — ${format(dropoff.value)}`,`${days()} ${days()===1?'dan':'dana'} · ${car.price===null?'Priceless':money(days()*car.price)}`]){const p=document.createElement('p');p.textContent=line;$('summary-content').append(p);}$('summary').showModal();});
 document.querySelectorAll('.close,.close-summary').forEach(button=>button.addEventListener('click',()=>$('summary').close()));
 update();
